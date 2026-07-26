@@ -1,12 +1,11 @@
 spring:
-  cloud:
-    compatibility-verifier:
-      enabled: false
   application:
     name: api-gateway
   profiles:
     active: local
   cloud:
+    compatibility-verifier:
+      enabled: false
     gateway:
       routes:
         - id: auth-service
