@@ -26,16 +26,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Value("${app.jwt.secret:dGhpcy1pcy1hLXNhZWZ0eS1zZWNyZXQta2V5LXdoaWNoLW11c3QtYmUtYXQtbGVhc3QtMjU2LWJpdHMtbG9uZy1mb3ItamN3dC1zaWduYXR1cmUtc2FmZXR5}")
-    private String jwtSecret;
 
-    /**
-     * Bean wrapper for common library JwtUtils utility.
-     */
-    @Bean
-    public JwtUtils jwtUtils() {
-        return new JwtUtils(jwtSecret);
-    }
 
     /**
      * Security filter chain mapping.
