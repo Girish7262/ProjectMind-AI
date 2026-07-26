@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * Configuration properties class mapping downstream microservices target URLs and authorization secret keys.
  */
 @Data
-@Component
+@Component("appGatewayProperties")
 @ConfigurationProperties(prefix = "app.gateway")
 public class GatewayProperties {
     private String jwtSecret = "dGhpcy1pcy1hLXNhZWZ0eS1zZWNyZXQta2V5LXdoaWNoLW11c3QtYmUtYXQtbGVhc3QtMjU2LWJpdHMtbG9uZy1mb3ItamN3dC1zaWduYXR1cmUtc2FmZXR5";
