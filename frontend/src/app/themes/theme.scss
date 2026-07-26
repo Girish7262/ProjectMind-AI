@@ -1,0 +1,36 @@
+$font-family: 'Inter', sans-serif;
+
+// Theme Colors Light
+$light-background: #ffffff;
+$light-primary: #4f46e5;
+$light-text: #1f2937;
+
+// Theme Colors Dark
+$dark-background: #0f172a;
+$dark-primary: #6366f1;
+$dark-text: #f3f4f6;
+
+body {
+  margin: 0;
+  font-family: $font-family;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.dark-theme {
+  background-color: $dark-background;
+  color: $dark-text;
+  
+  a {
+    color: $dark-primary;
+  }
+}
+
+.light-theme {
+  background-color: $light-background;
+  color: $light-text;
+  
+  a {
+    color: $light-primary;
+  }
+}

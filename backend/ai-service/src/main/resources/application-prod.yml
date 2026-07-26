@@ -1,0 +1,85 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://${DB_HOST:postgres-prod}:5432/${DB_NAME:acciobuild_ai_prod}}
+    username: ${DATABASE_USERNAME:${DB_USER:prod_user}}
+    password: ${DATABASE_PASSWORD:${DB_PASSWORD:prod_secure_password_123}}
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 10000
+      pool-name: ProdAiServiceHikariCP
+  redis:
+    host: ${REDIS_HOST:redis-prod}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    ssl:
+      enabled: true
+
+server:
+  port: 8085
+  shutdown: graceful
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        secure: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,env,configprops
+  endpoint:
+    health:
+      show-details: when_authorized
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: db,redisCustom,diskSpace,ping
+        liveness:
+          include: ping
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      aiProviderService:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowType: TIME_BASED
+        minimumNumberOfCalls: 5
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+      toolExecutionService:
+        registerHealthIndicator: true
+        slidingWindowSize: 5
+        permittedNumberOfCallsInHalfOpenState: 2
+        waitDurationInOpenState: 5s
+        failureRateThreshold: 40
+  retry:
+    instances:
+      aiProviderService:
+        maxAttempts: 3
+        waitDuration: 500ms
+        retryExceptions:
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+  ratelimiter:
+    instances:
+      apiLimit:
+        limitForPeriod: 100
+        limitRefreshPeriod: 1s
+        timeoutDuration: 500ms
+  timelimiter:
+    instances:
+      aiProviderService:
+        timeoutDuration: 2s
+  bulkhead:
+    instances:
+      aiProviderService:
+        maxConcurrentCalls: 20
+        maxWaitDuration: 500ms

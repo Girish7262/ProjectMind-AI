@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- Development Appender with clear human-readable logging -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - [Trace: %X{traceId:-None}, Span: %X{spanId:-None}, Tenant: %X{tenantId:-None}, Correlation: %X{correlationId:-None}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Production Appender delivering structured JSON and masking sensitive credentials -->
+    <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>{"timestamp":"%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}","thread":"%thread","level":"%level","logger":"%logger","traceId":"%X{traceId:-}","spanId":"%X{spanId:-}","tenantId":"%X{tenantId:-}","correlationId":"%X{correlationId:-}","message":"%replace(%msg){'(password|apiKey|secret|api_key|token)=\\\"?([a-zA-Z0-9_\\-+=]{6,})\\\"?', '$1=***'}","exception":"%ex{short}"}%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Activate JSON logging under the production profile -->
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="JSON_CONSOLE" />
+        </root>
+    </springProfile>
+
+    <!-- Default to plain logging for dev and local testing -->
+    <springProfile name="!prod">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+</configuration>

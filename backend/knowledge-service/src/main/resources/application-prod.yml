@@ -1,0 +1,92 @@
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 20000
+  jpa:
+    properties:
+      hibernate:
+        jdbc.batch_size: 50
+        order_inserts: true
+        order_updates: true
+        cache.use_second_level_cache: true
+        cache.use_query_cache: true
+  data:
+    redis:
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 20
+          max-idle: 10
+          min-idle: 2
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,caches,beans,env,configprops,scheduledtasks
+  endpoint:
+    health:
+      show-details: when_authorized
+      probes:
+        enabled: true
+      group:
+        liveness:
+          include: livenessState,knowledgeDatabase
+        readiness:
+          include: readinessState,knowledgeDatabase,outbox,searchIndex,chunkPreparation,embeddingQueue
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      projectService:
+        slidingWindowSize: 20
+        failureRateThreshold: 50
+        waitDurationInOpenState: 15s
+        permittedNumberOfCallsInHalfOpenState: 5
+      organizationService:
+        slidingWindowSize: 20
+        failureRateThreshold: 50
+        waitDurationInOpenState: 15s
+        permittedNumberOfCallsInHalfOpenState: 5
+      aiProvider:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+  retry:
+    instances:
+      projectService:
+        maxAttempts: 3
+        waitDuration: 1s
+      organizationService:
+        maxAttempts: 3
+        waitDuration: 1s
+      aiProvider:
+        maxAttempts: 3
+        waitDuration: 1s
+  ratelimiter:
+    instances:
+      projectService:
+        limitForPeriod: 50
+        limitRefreshPeriod: 1s
+        timeoutDuration: 500ms
+      organizationService:
+        limitForPeriod: 50
+        limitRefreshPeriod: 1s
+        timeoutDuration: 500ms
+  bulkhead:
+    instances:
+      projectService:
+        maxConcurrentCalls: 20
+      organizationService:
+        maxConcurrentCalls: 20
+  timelimiter:
+    instances:
+      projectService:
+        timeoutDuration: 3s
+      organizationService:
+        timeoutDuration: 3s

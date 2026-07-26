@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://${DB_HOST:postgres}:5432/${DB_NAME:acciobuild_knowledge}}
+    username: ${DATABASE_USERNAME:${DB_USER:postgres}}
+    password: ${DATABASE_PASSWORD:${DB_PASSWORD:postgres}}
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}

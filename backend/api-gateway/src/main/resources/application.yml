@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: api-gateway
+  profiles:
+    active: local
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/v1/auth/**
+        - id: organization-service
+          uri: lb://organization-service
+          predicates:
+            - Path=/api/v1/organizations/**
+        - id: project-service
+          uri: lb://project-service
+          predicates:
+            - Path=/api/v1/projects/**
+        - id: knowledge-service
+          uri: lb://knowledge-service
+          predicates:
+            - Path=/api/v1/knowledge/**
+        - id: ai-service
+          uri: lb://ai-service
+          predicates:
+            - Path=/api/v1/ai/**
+
+server:
+  port: 8080
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true

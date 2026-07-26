@@ -1,0 +1,71 @@
+prometheus:
+  enabled: true
+  server:
+    persistentVolume:
+      enabled: true
+      size: 20Gi
+    scrapeConfigs:
+      - job_name: 'spring-boot-actuator'
+        metrics_path: '/actuator/prometheus'
+        scrape_interval: 15s
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces:
+              names:
+                - acciobuild
+
+grafana:
+  enabled: true
+  adminPassword: "acciobuild-grafana-secure-pass"
+  persistence:
+    enabled: true
+    size: 10Gi
+
+loki:
+  enabled: true
+  retention:
+    enabled: true
+    period: 7d
+
+promtail:
+  enabled: true
+  config:
+    lokiAddress: "http://loki:3100/loki/api/v1/push"
+
+alertmanager:
+  enabled: true
+  config:
+    global:
+      resolve_timeout: 5m
+    route:
+      group_by: ['alertname', 'cluster', 'service']
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 1h
+      receiver: 'pagerduty-notifications'
+    receivers:
+      - name: 'pagerduty-notifications'
+        pagerduty_configs:
+          - service_key: "acciobuild-pagerduty-service-key-value"
+  alertRules:
+    - name: HostHighCpuLoad
+      expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 85
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High CPU utilization detected on node"
+    - name: ServiceDatabaseDown
+      expr: up{job="postgres-db"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "PostgreSQL Database Down"
+    - name: PodRestartRate
+      expr: rate(kube_pod_container_status_restarts_total[10m]) > 0.1
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Frequent pod restarts detected"

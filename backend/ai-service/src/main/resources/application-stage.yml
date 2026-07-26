@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:postgres-stage}:5432/${DB_NAME:acciobuild_ai_stage}
+    username: ${DB_USER:stage_user}
+    password: ${DB_PASSWORD:stage_password_123}
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 5
+      idle-timeout: 30000
+      pool-name: StageAiServiceHikariCP
+  redis:
+    host: ${REDIS_HOST:redis-stage}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+
+server:
+  port: 8085
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      aiProviderService:
+        registerHealthIndicator: true
+        slidingWindowSize: 5
+        failureRateThreshold: 50
+  retry:
+    instances:
+      aiProviderService:
+        maxAttempts: 2
+        waitDuration: 200ms

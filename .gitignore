@@ -1,0 +1,57 @@
+# Maven / Java
+**/target/
+**/*.jar
+**/*.war
+**/*.ear
+**/*.zip
+**/*.tar.gz
+.mvn/
+.project
+.classpath
+.settings/
+
+# Node / Angular
+**/node_modules/
+**/dist/
+.angular/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.sass-cache/
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS / System
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Environment & Temp Files
+.env
+.env.local
+.env.*.local
+*.log
+*.tmp
+*.bak
+
+# Agentic / AI Sandbox Tools
+.agents/
+.gemini/
+brain/
+scratch/
+walkthrough.md
+task.md
+implementation_plan.md
+runtime_validation_report.md
+deployment_guide.md
+kafka_migration_guide.md
+risk_investigation.md
+discovery_execution_plan.md

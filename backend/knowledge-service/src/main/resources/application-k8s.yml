@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:postgres-service}:5432/${DB_NAME:acciobuild_knowledge}
+  data:
+    redis:
+      host: ${REDIS_HOST:redis-service}
+
+management:
+  endpoint:
+    health:
+      show-details: always

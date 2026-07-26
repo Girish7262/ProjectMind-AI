@@ -1,0 +1,47 @@
+global:
+  registry: ghcr.io
+  repository: girish/acciobuild
+  tag: latest
+  jwtSecret: "acciobuild-jwt-secret-string-value"
+
+services:
+  - name: api-gateway
+    port: 8080
+    replicaCount: 2
+    cpuLimit: "500m"
+    memoryLimit: "512Mi"
+  - name: auth-service
+    port: 8081
+    replicaCount: 1
+    cpuLimit: "300m"
+    memoryLimit: "256Mi"
+  - name: organization-service
+    port: 8082
+    replicaCount: 1
+    cpuLimit: "300m"
+    memoryLimit: "256Mi"
+  - name: project-service
+    port: 8083
+    replicaCount: 1
+    cpuLimit: "300m"
+    memoryLimit: "256Mi"
+  - name: knowledge-service
+    port: 8084
+    replicaCount: 1
+    cpuLimit: "500m"
+    memoryLimit: "512Mi"
+  - name: ai-service
+    port: 8085
+    replicaCount: 1
+    cpuLimit: "500m"
+    memoryLimit: "512Mi"
+
+postgres:
+  host: postgres-db
+  port: 5432
+  user: postgres
+  password: "acciobuild-db-password"
+
+redis:
+  host: redis-cache
+  port: 6379

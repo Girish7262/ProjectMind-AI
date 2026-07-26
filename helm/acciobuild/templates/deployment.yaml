@@ -1,0 +1,57 @@
+{{- range .Values.services }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .name }}
+  labels:
+    app: {{ .name }}
+spec:
+  replicas: {{ .replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .name }}
+    spec:
+      containers:
+        - name: {{ .name }}
+          image: "{{ $.Values.global.registry }}/{{ $.Values.global.repository }}/{{ .name }}:{{ $.Values.global.tag }}"
+          ports:
+            - containerPort: {{ .port }}
+          resources:
+            limits:
+              cpu: {{ .cpuLimit }}
+              memory: {{ .memoryLimit }}
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://{{ $.Values.postgres.host }}:{{ $.Values.postgres.port }}/acciobuild"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "{{ $.Values.postgres.user }}"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "{{ $.Values.postgres.password }}"
+            - name: SPRING_DATA_REDIS_HOST
+              value: "{{ $.Values.redis.host }}"
+            - name: SPRING_DATA_REDIS_PORT
+              value: "{{ $.Values.redis.port }}"
+            - name: JWT_SECRET
+              value: "{{ $.Values.global.jwtSecret }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .name }}
+spec:
+  ports:
+    - port: {{ .port }}
+      targetPort: {{ .port }}
+  selector:
+    app: {{ .name }}
+---
+{{- end }}
