@@ -1,0 +1,129 @@
+<div class="auth-page-wrapper">
+  <!-- Left Side: Interactive Tech / AI Illustration (Visible on Desktop) -->
+  <div class="auth-sidebar-illustration">
+    <div class="glow-sphere glow-1"></div>
+    <div class="glow-sphere glow-2"></div>
+    
+    <div class="illustration-content">
+      <!-- Floating Grid Graphic -->
+      <div class="network-nodes-graphic">
+        <div class="central-brain-node">
+          <span nz-icon nzType="api" nzTheme="outline" class="brain-icon"></span>
+        </div>
+        <div class="satellite-node sat-1">
+          <span nz-icon nzType="code" nzTheme="outline"></span>
+        </div>
+        <div class="satellite-node sat-2">
+          <span nz-icon nzType="database" nzTheme="outline"></span>
+        </div>
+        <div class="satellite-node sat-3">
+          <span nz-icon nzType="branches" nzTheme="outline"></span>
+        </div>
+      </div>
+
+      <div class="text-group">
+        <h1 class="brand-title">Get Started with ProjectMind AI</h1>
+        <p class="brand-subtitle">Create your personal workspace, connect your engineering databases, and experience real-time AI assistance instantly.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side: Glassmorphism Auth Card Form -->
+  <div class="auth-form-container">
+    <div class="auth-glass-card">
+      <div class="auth-card-header">
+        <div class="logo-wrapper">
+          <span nz-icon nzType="merge" nzTheme="outline" class="logo-icon"></span>
+          <span class="logo-text">ProjectMind <span class="highlight">AI</span></span>
+        </div>
+        <h2 class="card-title">Create Account</h2>
+        <p class="card-subtitle">Set up your workspace and developer profile</p>
+      </div>
+
+      <form nz-form [formGroup]="registerForm" (ngSubmit)="onSubmit()" nzLayout="vertical" class="auth-form">
+        <!-- Organization Name Input -->
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="orgName">Organization Name</nz-form-label>
+          <nz-form-control nzErrorTip="Organization name is required">
+            <nz-input-group nzPrefixIcon="global">
+              <input nz-input type="text" id="orgName" formControlName="orgName" placeholder="e.g. Acme Corporation" class="custom-input" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <!-- Full Name Input -->
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="username">Full Name</nz-form-label>
+          <nz-form-control nzErrorTip="Full name is required">
+            <nz-input-group nzPrefixIcon="user">
+              <input nz-input type="text" id="username" formControlName="username" placeholder="John Doe" class="custom-input" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <!-- Email Input -->
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="email">Email Address</nz-form-label>
+          <nz-form-control nzErrorTip="Please enter a valid email address">
+            <nz-input-group nzPrefixIcon="mail">
+              <input nz-input type="email" id="email" formControlName="email" placeholder="name@company.com" class="custom-input" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <!-- Password Input -->
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="password">Password</nz-form-label>
+          <nz-form-control nzErrorTip="Password is required (min 8 characters)">
+            <nz-input-group nzPrefixIcon="lock">
+              <input nz-input type="password" id="password" formControlName="password" placeholder="Min 8 characters" class="custom-input" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <!-- Confirm Password Input -->
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="confirmPassword">Confirm Password</nz-form-label>
+          <nz-form-control nzErrorTip="Please confirm your password">
+            <nz-input-group nzPrefixIcon="lock">
+              <input nz-input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder="Repeat password" class="custom-input" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <!-- Terms and Conditions Checkbox -->
+        <nz-form-item>
+          <nz-form-control nzErrorTip="You must accept the terms & conditions">
+            <label nz-checkbox formControlName="acceptTerms" class="custom-checkbox">
+              I accept the <a href="#" class="terms-link">Terms & Conditions</a>
+            </label>
+          </nz-form-control>
+        </nz-item>
+
+        <!-- Submit Button -->
+        <button nz-button nzType="primary" nzBlock [disabled]="registerForm.invalid || loading()" class="primary-submit-btn">
+          @if (loading()) {
+            <span nz-icon nzType="loading"></span>
+            <span>Creating account...</span>
+          } @else {
+            <span>Create Account</span>
+          }
+        </button>
+
+        <!-- Error Notification -->
+        @if (errorMessage()) {
+          <div class="auth-error-banner">
+            <span nz-icon nzType="exclamation-circle" nzTheme="outline" class="error-banner-icon"></span>
+            <span>{{ errorMessage() }}</span>
+          </div>
+        }
+      </form>
+
+      <!-- Footer Link -->
+      <div class="auth-card-footer">
+        <span>Already have an account? </span>
+        <a routerLink="/auth/login" class="footer-redirect-link">Sign In</a>
+      </div>
+    </div>
+  </div>
+</div>
