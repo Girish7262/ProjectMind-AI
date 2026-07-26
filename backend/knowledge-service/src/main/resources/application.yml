@@ -25,7 +25,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
 server:
-  port: 8084
+  port: ${PORT:8084}
   shutdown: graceful
 
 management:
