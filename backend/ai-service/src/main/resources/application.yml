@@ -3,6 +3,11 @@ spring:
     name: ai-service
   profiles:
     active: local
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://${DB_HOST:localhost}:5432/${DB_NAME:acciobuild_ai}}
     username: ${DATABASE_USERNAME:${DB_USER:postgres}}
@@ -41,3 +46,7 @@ management:
     health:
       probes:
         enabled: true
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:dGhpcy1pcy1hLXNhZWZ0eS1zZWNyZXQta2V5LXdoaWNoLW11c3QtYmUtYXQtbGVhc3QtMjU2LWJpdHMtbG9uZy1mb3ItamN3dC1zaWduYXR1cmUtc2FmZXR5}
