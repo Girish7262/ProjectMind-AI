@@ -4,13 +4,6 @@ import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 
-// Ng-Zorro-Antd Imports
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-
 /**
  * Production-ready registration interface supporting organization signups and password constraints.
  * Styled with custom premium glassmorphism and animations.
@@ -21,12 +14,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   imports: [
     CommonModule, 
     ReactiveFormsModule, 
-    RouterLink,
-    NzFormModule,
-    NzInputModule,
-    NzButtonModule,
-    NzCheckboxModule,
-    NzIconModule
+    RouterLink
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
