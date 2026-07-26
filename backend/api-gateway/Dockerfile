@@ -2,10 +2,8 @@
 FROM maven:3.9.6-eclipse-temurin-21-alpine AS builder
 WORKDIR /workspace
 
-# Copy parent pom and dependencies
-COPY pom.xml .
-COPY common-library common-library
-COPY api-gateway api-gateway
+# Copy parent pom and all modules
+COPY . .
 
 # Package the service module and its library dependencies
 RUN mvn -pl api-gateway -am clean package -DskipTests
